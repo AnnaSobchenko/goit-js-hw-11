@@ -21,20 +21,22 @@ function getImages(e) {
   refs.galleryEl.innerHTML = '';
   query = e.target.searchQuery.value;
   fetchImages(query, page, perPage).then(createMarkup);
-  Notiflix.Notify.success(`Hooray! We found ${totalHits} images`);
+  // Notiflix.Notify.success(`Hooray! We found ${totalHits} images`);
 }
 
 function createMarkup(dataImages) {
-  console.log(dataImages.hits);
+  if (!dataImages) return;
+  console.log(dataImages);
+  totalHits = dataImages.totalHits;
   const markup = photoCard(dataImages.hits);
   refs.galleryEl.innerHTML += markup;
   renderOnIntersectionObserverApi(dataImages.hits);
 }
 
 function scrollPage() {
-  if (page > Math.floor(500 / perPage) + 1) return;
+  if (page > Math.floor(totalHits / perPage) + 1) return;
   page += 1;
-  fetchImages(query, page, perPage).then(createMarkup);
+  fetchImages(query, page, perPage, totalHits).then(createMarkup);
 }
 
 function renderOnIntersectionObserverApi(data) {
