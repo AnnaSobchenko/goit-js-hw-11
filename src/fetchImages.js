@@ -4,7 +4,8 @@ const apiKey = '25300151-6154e4a76e8e82454cce4100c';
 import Notiflix from 'notiflix';
 
 export default async function fetchImages(query, page = 1, perPage = 40) {
-  if (!query || !query.trim()) {
+  console.log('page=', page);
+  if (!query || !query.trim() || page > Math.floor(500 / perPage) + 1) {
     return Promise.resolve('');
   }
   return await fetch(
