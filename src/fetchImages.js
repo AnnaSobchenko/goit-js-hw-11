@@ -20,13 +20,14 @@ export default async function fetchImages(query, page = 1, perPage = 40, totalHi
       if (Number(response.data.total) !== 0 && page === 1) {
         Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} images`);
       }
-      return response.data;
 
       if (Number(response.data.total) === 0) {
         Notiflix.Notify.failure(
           '❌ Sorry, there are no images matching your search query. Please try again.',
         );
+        return;
       }
+      return response.data;
     })
     .catch(() =>
       Notiflix.Notify.failure(
